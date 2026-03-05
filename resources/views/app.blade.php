@@ -24,7 +24,9 @@
     </head>
     <body class="font-sans antialiased">
         @include('components.navbar')
-        <main style="min-height:80vh;padding:2rem 0 4rem 0;text-align:center;"></main>
+        <main style="min-height:80vh;padding:2rem 0 4rem 0;text-align:center;">
+            @yield('content')
+        </main>
         @include('components.modal')
         @include('components.footer')
     </body>
