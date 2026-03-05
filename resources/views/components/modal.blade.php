@@ -18,7 +18,7 @@ function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 function flipAuthCard(toRegister = true) {
-    document.getElementById('authCardInner').style.transform = toRegister ? 'rotateY(180deg)' : 'rotateY(0deg)';
+    document.getElementById('authCardInner').style.transform = toRegister ? 'otateY(180deg)' : 'rotateY(0deg)';
 }
 // Close modal on outside click
 if (typeof window !== 'undefined') {

@@ -17,4 +17,7 @@
     <div style="margin-top:1rem;">
         <button type="button" onclick="flipAuthCard()">Belum punya akun? Register</button>
     </div>
+    <div style="margin-top:0.5rem;">
+        <a href="{{ route('password.request') }}">Lupa password?</a>
+    </div>
 </div>
