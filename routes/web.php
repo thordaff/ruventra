@@ -1,7 +1,3 @@
-// Custom reset password page
-Route::get('/reset-password', function () {
-    return view('auth.reset-password');
-});
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -64,6 +60,11 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+});
+
+// Custom reset password page
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
 });
 
 require __DIR__.'/settings.php';
