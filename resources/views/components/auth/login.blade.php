@@ -18,6 +18,6 @@
         <button type="button" onclick="flipAuthCard()">Belum punya akun? Register</button>
     </div>
     <div style="margin-top:0.5rem;">
-        <a href="{{ route('password.request') }}">Lupa password?</a>
+        <a href="/reset-password">Lupa password?</a>
     </div>
 </div>
