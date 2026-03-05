@@ -10,21 +10,21 @@
     </div>
 </div>
 <script>
-function showAuthModal() {
-    document.getElementById('authModal').style.display = 'block';
-    document.getElementById('authCardInner').style.transform = 'rotateY(0deg)';
-}
-function closeAuthModal() {
-    document.getElementById('authModal').style.display = 'none';
-}
-function flipAuthCard(toRegister = true) {
-    document.getElementById('authCardInner').style.transform = toRegister ? 'otateY(180deg)' : 'rotateY(0deg)';
-}
-// Close modal on outside click
-if (typeof window !== 'undefined') {
-    document.addEventListener('click', function(e) {
-        var modal = document.getElementById('authModal');
-        if (e.target === modal) closeAuthModal();
-    });
-}
+    function showAuthModal() {
+        document.getElementById('authModal').style.display = 'block';
+        document.getElementById('authCardInner').style.transform = 'rotateY(0deg)';
+    }
+    function closeAuthModal() {
+        document.getElementById('authModal').style.display = 'none';
+    }
+    function flipAuthCard(toRegister = true) {
+        document.getElementById('authCardInner').style.transform = toRegister ? 'otateY(180deg)' : 'rotateY(0deg)';
+    }
+    // Close modal on outside click
+    if (typeof window !== 'undefined') {
+        document.addEventListener('click', function(e) {
+            var modal = document.getElementById('authModal');
+            if (e.target === modal) closeAuthModal();
+        });
+    }
 </script>
