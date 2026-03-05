@@ -1,3 +1,3 @@
-<footer style="background:#f8f9fa;padding:1rem 2rem;text-align:center;position:fixed;bottom:0;width:100vw;z-index:100;">
+<footer class="fixed bottom-0 w-full bg-gray-100 text-center py-4 text-gray-500 z-50">
     <span>&copy; {{ date('Y') }} Ruventra - Rumah Event Nusantara</span>
 </footer>

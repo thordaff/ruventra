@@ -14,17 +14,15 @@
             @inertiaHead
         @endif
         <style>
-            html { background-color: oklch(1 0 0); }
-            html.dark { background-color: oklch(0.145 0 0); }
             .flip-card { perspective: 1000px; }
             .flip-card-inner { transition: transform 0.6s; transform-style: preserve-3d; position: relative; width: 100%; min-height: 350px; }
             .flip-card-front, .flip-card-back { background: #fff; padding: 2rem; position: absolute; width: 100%; backface-visibility: hidden; min-height: 350px; box-shadow: 0 2px 16px #0002; }
             .flip-card-back { transform: rotateY(180deg); }
         </style>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-gray-50 min-h-screen flex flex-col">
         @include('components.navbar')
-        <main style="min-height:80vh;padding:2rem 0 4rem 0;text-align:center;">
+        <main class="flex-1 flex flex-col items-center justify-center py-8 px-2">
             @yield('content')
         </main>
         @include('components.modal')
