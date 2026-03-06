@@ -21,6 +21,11 @@ Route::middleware('auth')->get('/api/user', function (Request $request) {
     return response()->json($request->user()->load('roles'));
 });
 
+// API: get new CSRF token (untuk SPA setelah logout)
+Route::get('/api/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
 // =====================================================
 // =============== HOME & OTHER ROUTES ================
 // =====================================================
