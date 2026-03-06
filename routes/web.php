@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\NavItemController;
 use Illuminate\Http\Request;
 
 // =====================================================
@@ -20,6 +21,9 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 Route::middleware('auth')->get('/api/user', function (Request $request) {
     return response()->json($request->user()->load('roles'));
 });
+
+// API: get nav items filtered by user's roles
+Route::middleware('auth')->get('/api/nav-items', [NavItemController::class, 'index']);
 
 // API: get new CSRF token (untuk SPA setelah logout)
 Route::get('/api/csrf-token', function () {
