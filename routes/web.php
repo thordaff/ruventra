@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SwitchAccountController;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 // Password Reset
@@ -65,6 +66,51 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Custom reset password page
 Route::get('/reset-password', function () {
     return view('auth.reset-password');
+});
+
+// Dashboard per role
+Route::middleware(['auth'])->get('/dashboard', function () {
+    $user = Auth::user();
+    $activeRole = session('active_role') ?? $user->roles->first()->name ?? 'customer';
+    switch ($activeRole) {
+        case 'developer':
+            return view('dashboard.developer');
+        case 'superAdmin':
+            return view('dashboard.superadmin');
+        case 'admin':
+            return view('dashboard.admin');
+        default:
+            return view('dashboard.customer');
+    }
+})->name('dashboard.role');
+
+// Jelajah Event
+Route::get('/jelajah', function () {
+    // Contoh data event, ganti dengan query ke database jika sudah ada model Event
+    $events = [
+        (object)[
+            'id' => 1,
+            'name' => 'Konser Musik Nusantara',
+            'date' => '2026-04-10',
+            'description' => 'Konser musik terbesar di Indonesia dengan berbagai artis nasional.',
+            'image_url' => null,
+        ],
+        (object)[
+            'id' => 2,
+            'name' => 'Seminar Bisnis Kreatif',
+            'date' => '2026-05-02',
+            'description' => 'Seminar inspiratif untuk pelaku bisnis kreatif dan UMKM.',
+            'image_url' => null,
+        ],
+        (object)[
+            'id' => 3,
+            'name' => 'Festival Kuliner Nusantara',
+            'date' => '2026-06-15',
+            'description' => 'Festival makanan khas dari seluruh penjuru Nusantara.',
+            'image_url' => null,
+        ],
+    ];
+    return view('jelajah', compact('events'));
 });
 
 require __DIR__.'/settings.php';
