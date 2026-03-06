@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisteredUserController extends Controller
 {
-    public function create()
-    {
-        return view('auth.register');
-    }
+    // Tidak digunakan lagi (SPA Vue)
 
     public function store(Request $request)
     {
@@ -36,6 +33,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return response()->json(['user' => $user->load('roles')]);
     }
 }

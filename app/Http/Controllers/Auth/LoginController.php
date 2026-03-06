@@ -8,10 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
+    // Tidak digunakan lagi (SPA Vue, tidak ada halaman login Blade)
 
     public function login(Request $request)
     {
@@ -22,25 +19,13 @@ class LoginController extends Controller
 
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $user = Auth::user();
-
-            // Redirect to 2FA challenge if enabled and confirmed
-            if ($user->hasTwoFactorEnabled()) {
-                Auth::logout();
-                $request->session()->put([
-                    'login.id' => $user->getKey(),
-                    'login.remember' => $request->boolean('remember'),
-                ]);
-                return redirect()->route('two-factor.login');
-            }
-
             $request->session()->regenerate();
-            return redirect('/dashboard');
+            return response()->json(['user' => Auth::user()->load('roles')]);
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ]);
+        return response()->json([
+            'errors' => ['email' => ['Email atau password salah.']],
+        ], 422);
     }
 
     public function logout(Request $request)
@@ -48,6 +33,7 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        return response()->json(['message' => 'Logged out']);
         return redirect('/');
     }
 }
