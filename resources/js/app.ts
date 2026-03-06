@@ -6,12 +6,14 @@ import App from './App.vue';
 import router from './router';
 import '../css/app.css';
 
-// Setup axios CSRF token
-const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-if (token) {
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-}
 axios.defaults.withCredentials = true;
+axios.interceptors.request.use((config) => {
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    if (token) {
+        config.headers['X-CSRF-TOKEN'] = token;
+    }
+    return config;
+});
 
 const app = createApp(App);
 app.use(router);
