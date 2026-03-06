@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+import { useAuth } from '@/composables/useAuth';
 import AppLayout from '@/layouts/AppLayout.vue';
 import DashboardSidebarLayout from '@/layouts/DashboardSidebarLayout.vue';
 import Dashboard from './pages/Dashboard.vue';
@@ -15,8 +16,15 @@ const routes = [
         ],
     },
     {
+        path: '/login',
+        name: 'Login',
+        component: () => import('./pages/auth/AuthPage.vue'),
+        meta: { guestOnly: true },
+    },
+    {
         path: '/dashboard',
         component: DashboardSidebarLayout,
+        meta: { requiresAuth: true },
         children: [
             { path: '', name: 'Dashboard', component: Dashboard },
             // Sub-routes dashboard pakai sidebar, tampilkan 404 jika tidak ditemukan
@@ -26,6 +34,7 @@ const routes = [
     {
         path: '/settings',
         component: DashboardSidebarLayout,
+        meta: { requiresAuth: true },
         redirect: '/settings/profile',
         children: [
             { path: 'profile', name: 'SettingsProfile', component: () => import('./pages/settings/Profile.vue') },
@@ -41,6 +50,26 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+
+// ── Auth guard ─────────────────────────────────────────────────────────────
+router.beforeEach(async (to) => {
+    const { isAuthenticated, fetchUser, initialized } = useAuth();
+
+    // Ensure we know the auth state before deciding
+    if (!initialized.value) {
+        await fetchUser();
+    }
+
+    // Redirect unauthenticated users away from protected routes
+    if (to.meta.requiresAuth && !isAuthenticated.value) {
+        return { name: 'Login', query: { redirect: to.fullPath } };
+    }
+
+    // Redirect already-authenticated users away from guest-only pages
+    if (to.meta.guestOnly && isAuthenticated.value) {
+        return { name: 'Dashboard' };
+    }
 });
 
 export default router;
