@@ -31,11 +31,11 @@ class RegisteredUserController extends Controller
         ]);
 
         // Assign customer role only
-        $customerRole = Role::where('name', 'customer')->first();
+        $customerRole = Role::firstOrCreate(['name' => 'customer'], ['label' => 'Customer']);
         $user->roles()->attach($customerRole);
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect()->route('dashboard');
     }
 }

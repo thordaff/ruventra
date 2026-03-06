@@ -21,11 +21,15 @@
         </style>
     </head>
     <body class="font-sans antialiased bg-gray-50 min-h-screen flex flex-col">
-        @include('components.navbar')
-        <main class="flex-1 flex flex-col items-center justify-center py-8 px-2">
-            @yield('content')
-        </main>
-        @include('components.modal')
-        @include('components.footer')
+        @if(isset($page))
+            @inertia
+        @else
+            @include('components.navbar')
+            <main class="flex-1 flex flex-col items-center justify-center py-8 px-2">
+                @yield('content')
+            </main>
+            @include('components.modal')
+            @include('components.footer')
+        @endif
     </body>
 </html>

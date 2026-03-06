@@ -21,7 +21,19 @@ class LoginController extends Controller
         ]);
 
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+
+            // Redirect to 2FA challenge if enabled and confirmed
+            if ($user->hasTwoFactorEnabled()) {
+                Auth::logout();
+                $request->session()->put([
+                    'login.id' => $user->getKey(),
+                    'login.remember' => $request->boolean('remember'),
+                ]);
+                return redirect()->route('two-factor.login');
+            }
+
             $request->session()->regenerate();
             return redirect('/dashboard');
         }
