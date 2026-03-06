@@ -1,47 +1,35 @@
-<script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes';
-import type { BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-    },
-];
-</script>
-
 <template>
-    <Head title="Dashboard" />
-
-    <AppLayout :breadcrumbs="breadcrumbs">
-        <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
-        >
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-            </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
-            >
-                <PlaceholderPattern />
-            </div>
+    <div class="max-w-4xl mx-auto py-8 w-full">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
+        <div class="bg-white rounded-lg shadow p-6">
+            <template v-if="hasRole('developer')">
+                <p class="text-gray-700">Selamat datang, Developer! Anda dapat mengakses fitur pengembangan, monitoring, dan tools internal.</p>
+            </template>
+            <template v-else-if="hasRole('superAdmin')">
+                <p class="text-gray-700">Selamat datang, Super Admin! Anda dapat mengelola seluruh sistem, user, dan event.</p>
+            </template>
+            <template v-else-if="hasRole('admin')">
+                <p class="text-gray-700">Selamat datang, Admin! Anda dapat mengelola event dan tiket.</p>
+            </template>
+            <template v-else>
+                <p class="text-gray-700">Selamat datang! Lihat event yang tersedia di halaman Jelajah.</p>
+            </template>
         </div>
-    </AppLayout>
+    </div>
 </template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuth } from '@/composables/useAuth';
+
+const { isAuthenticated, fetchUser, hasRole } = useAuth();
+const router = useRouter();
+
+onMounted(async () => {
+    await fetchUser();
+    if (!isAuthenticated.value) {
+        router.push('/');
+    }
+});
+</script>
