@@ -36,6 +36,22 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Relasi ke roles (multi-role)
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Determine if the user has two-factor authentication enabled and confirmed.
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return (bool) $this->two_factor_secret &&
+            ! is_null($this->two_factor_confirmed_at) &&
+            in_array(\Laravel\Fortify\TwoFactorAuthenticatable::class, class_uses_recursive(static::class));
+    }
+
     /**
      * Get the attributes that should be cast.
      *
