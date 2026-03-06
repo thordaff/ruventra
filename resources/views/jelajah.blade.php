@@ -10,7 +10,7 @@
             <div class="p-4">
                 <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600">{{ $event->name }}</h2>
                 <p class="text-gray-500 mb-2">{{ $event->date }}</p>
-                <p class="text-gray-700">{{ Str::limit($event->description, 80) }}</p>
+                <p class="text-gray-700">{{ \Illuminate\Support\Str::limit($event->description, 80) }}</p>
             </div>
         </div>
         @endforeach
@@ -18,7 +18,7 @@
 </div>
 <script>
 function handleEventClick(eventId) {
-    @if(Auth::check())
+    @if(auth()->check())
         window.location.href = '/event/' + eventId;
     @else
         showAuthModal();

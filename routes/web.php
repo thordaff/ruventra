@@ -8,19 +8,23 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SwitchAccountController;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 // =====================================================
 // =============== AUTH ROUTES ========================
 // =====================================================
-// Login (untuk modal)
-Route::post('login', [LoginController::class, 'login']);
+// Login
+Route::get('login', [LoginController::class, 'showLoginForm'])->middleware('guest')->name('login');
+Route::post('login', [LoginController::class, 'login'])->middleware(['guest', 'throttle:login'])->name('login.store');
 // Logout
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
 
-// Switch account (role)
-Route::middleware(['auth'])->get('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
+// Register
+Route::get('register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
+Route::post('register', [RegisteredUserController::class, 'store'])->middleware('guest')->name('register.store');
+
+// Switch account (role) - POST to prevent CSRF
+Route::middleware(['auth'])->post('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
 
 // =====================================================
 // =============== PASSWORD RESET ROUTES ==============
@@ -69,8 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
 });
 
-// Dashboard (semua role, fitur dibedakan di blade)
-Route::middleware(['auth'])->get('/dashboard', function () {
+// Role-based dashboard (distinct path to avoid conflict with the Inertia dashboard)
+Route::middleware(['auth'])->get('/dashboard/role', function () {
     return view('dashboard.dashboard');
 })->name('dashboard.role');
 

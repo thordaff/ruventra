@@ -11,6 +11,11 @@ class RoleAndUserSeeder extends Seeder
 {
     public function run(): void
     {
+        if (! app()->isLocal()) {
+            $this->command->warn('RoleAndUserSeeder skipped: only runs in the local environment.');
+            return;
+        }
+
         $roles = [
             ['name' => 'developer', 'label' => 'Developer'],
             ['name' => 'superAdmin', 'label' => 'Super Admin'],
