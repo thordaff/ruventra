@@ -27,6 +27,8 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
             { path: '', name: 'Dashboard', component: Dashboard },
+            { path: 'statistics', name: 'DashboardStatistics', component: () => import('./pages/dashboard/main/Statistic.vue') },
+            { path: 'revenue', name: 'DashboardRevenue', component: () => import('./pages/dashboard/main/Revenue.vue') },
             // Sub-routes dashboard pakai sidebar, tampilkan 404 jika tidak ditemukan
             { path: ':pathMatch(.*)*', name: 'DashboardNotFound', component: NotFound },
         ],

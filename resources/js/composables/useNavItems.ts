@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { shallowRef, ref } from 'vue';
 import {
     LayoutGrid,
     BarChart2,
@@ -10,6 +9,7 @@ import {
     FolderGit2,
     BookOpen,
 } from 'lucide-vue-next';
+import { shallowRef, ref } from 'vue';
 import type { Component } from 'vue';
 import type { NavItem } from '@/types';
 
