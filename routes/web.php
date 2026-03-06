@@ -47,17 +47,15 @@ Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
-// Login & Logout
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
+
+// Logout
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Login (untuk modal)
+Route::post('login', [LoginController::class, 'login']);
 
 // Switch account (role)
 Route::middleware(['auth'])->get('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
-
-// Register hanya untuk customer
-Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
