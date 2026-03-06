@@ -1,5 +1,4 @@
-import type { InertiaLinkProps } from '@inertiajs/vue3';
-import { usePage } from '@inertiajs/vue3';
+import { useRoute } from 'vue-router';
 import type { ComputedRef, DeepReadonly } from 'vue';
 import { computed, readonly } from 'vue';
 import { toUrl } from '@/lib/utils';
@@ -7,29 +6,27 @@ import { toUrl } from '@/lib/utils';
 export type UseCurrentUrlReturn = {
     currentUrl: DeepReadonly<ComputedRef<string>>;
     isCurrentUrl: (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck: string,
         currentUrl?: string,
         startsWith?: boolean,
     ) => boolean;
     isCurrentOrParentUrl: (
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck: string,
         currentUrl?: string,
     ) => boolean;
     whenCurrentUrl: <T, F = null>(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck: string,
         ifTrue: T,
         ifFalse?: F,
     ) => T | F;
 };
 
-const page = usePage();
-const currentUrlReactive = computed(
-    () => new URL(page.url, window?.location.origin).pathname,
-);
-
 export function useCurrentUrl(): UseCurrentUrlReturn {
+    const route = useRoute();
+    const currentUrlReactive = computed(() => route.path);
+
     function isCurrentUrl(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
+        urlToCheck: string,
         currentUrl?: string,
         startsWith: boolean = false,
     ) {
@@ -45,25 +42,17 @@ export function useCurrentUrl(): UseCurrentUrlReturn {
 
         try {
             const absoluteUrl = new URL(urlString);
-
             return comparePath(absoluteUrl.pathname);
         } catch {
             return false;
         }
     }
 
-    function isCurrentOrParentUrl(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        currentUrl?: string,
-    ) {
+    function isCurrentOrParentUrl(urlToCheck: string, currentUrl?: string) {
         return isCurrentUrl(urlToCheck, currentUrl, true);
     }
 
-    function whenCurrentUrl(
-        urlToCheck: NonNullable<InertiaLinkProps['href']>,
-        ifTrue: any,
-        ifFalse: any = null,
-    ) {
+    function whenCurrentUrl(urlToCheck: string, ifTrue: any, ifFalse: any = null) {
         return isCurrentUrl(urlToCheck) ? ifTrue : ifFalse;
     }
 
