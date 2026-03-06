@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-4xl mx-auto py-8 w-full">
+    <div class="py-8 w-full">
         <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
         <div class="bg-white rounded-lg shadow p-6">
             <template v-if="hasRole('developer')">
