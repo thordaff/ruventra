@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layouts/AppLayout.vue';
 import Dashboard from './pages/Dashboard.vue';
 import Home from './pages/Home.vue';
+import NotFound from './pages/NotFound.vue';
 
 const routes = [
     {
@@ -11,6 +12,8 @@ const routes = [
         children: [
             { path: '', name: 'Home', component: Home },
             { path: 'dashboard', name: 'Dashboard', component: Dashboard },
+            // Catch-all: 404 Not Found
+            { path: ':pathMatch(.*)*', name: 'NotFound', component: NotFound },
         ],
     },
 ];
