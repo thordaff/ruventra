@@ -13,18 +13,17 @@ use Illuminate\Support\Facades\Hash;
 // =====================================================
 // =============== AUTH ROUTES ========================
 // =====================================================
-// Login
-Route::get('login', [LoginController::class, 'showLoginForm'])->middleware('guest')->name('login');
-Route::post('login', [LoginController::class, 'login'])->middleware(['guest', 'throttle:login'])->name('login.store');
+// Login (untuk Vue SPA modal)
+Route::post('login', [LoginController::class, 'login']);
 // Logout
-Route::post('logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
-
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 // Register
-Route::get('register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
-Route::post('register', [RegisteredUserController::class, 'store'])->middleware('guest')->name('register.store');
+Route::post('register', [RegisteredUserController::class, 'store']);
 
-// Switch account (role) - POST to prevent CSRF
-Route::middleware(['auth'])->post('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
+// API: get current authenticated user (untuk Vue SPA)
+Route::middleware('auth')->get('/api/user', function (Request $request) {
+    return response()->json($request->user()->load('roles'));
+});
 
 // =====================================================
 // =============== PASSWORD RESET ROUTES ==============
@@ -67,53 +66,12 @@ Route::get('/reset-password', function () {
 });
 
 // =====================================================
-// =============== DASHBOARD ROUTES ===================
-// =====================================================
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
-});
-
-// Role-based dashboard (distinct path to avoid conflict with the Inertia dashboard)
-Route::middleware(['auth'])->get('/dashboard/role', function () {
-    return view('dashboard.dashboard');
-})->name('dashboard.role');
-
-// =====================================================
-// =============== EVENT ROUTES =======================
-// =====================================================
-Route::get('/jelajah', function () {
-    // Contoh data event, ganti dengan query ke database jika sudah ada model Event
-    $events = [
-        (object)[
-            'id' => 1,
-            'name' => 'Konser Musik Nusantara',
-            'date' => '2026-04-10',
-            'description' => 'Konser musik terbesar di Indonesia dengan berbagai artis nasional.',
-            'image_url' => null,
-        ],
-        (object)[
-            'id' => 2,
-            'name' => 'Seminar Bisnis Kreatif',
-            'date' => '2026-05-02',
-            'description' => 'Seminar inspiratif untuk pelaku bisnis kreatif dan UMKM.',
-            'image_url' => null,
-        ],
-        (object)[
-            'id' => 3,
-            'name' => 'Festival Kuliner Nusantara',
-            'date' => '2026-06-15',
-            'description' => 'Festival makanan khas dari seluruh penjuru Nusantara.',
-            'image_url' => null,
-        ],
-    ];
-    return view('jelajah', compact('events'));
-});
-
-// =====================================================
 // =============== HOME & OTHER ROUTES ================
 // =====================================================
-Route::inertia('/', 'Welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+
+// Catch-all: semua GET route dikembalikan ke Vue SPA
+Route::get('/{any}', function () {
+    return view('index');
+})->where('any', '.*')->name('spa');
 
 require __DIR__.'/settings.php';
