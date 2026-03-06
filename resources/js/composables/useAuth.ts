@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { computed, ref } from 'vue';
+import { useNavItems } from '@/composables/useNavItems';
 
 const user = ref<Record<string, any> | null>(null);
 const initialized = ref(false);
@@ -55,6 +56,8 @@ export function useAuth() {
     async function logout() {
         await axios.post('/logout');
         user.value = null;
+        // Reset nav items agar dimuat ulang saat login berikutnya
+        useNavItems().resetNavItems();
         // Session invalidate saat logout membuat CSRF token baru — update meta tag
         await refreshCsrfToken();
     }
