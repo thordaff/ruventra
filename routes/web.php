@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
-// Password Reset
+// =====================================================
+// =============== AUTH ROUTES ========================
+// =====================================================
+// Login (untuk modal)
+Route::post('login', [LoginController::class, 'login']);
+// Logout
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Switch account (role)
+Route::middleware(['auth'])->get('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
+
+// =====================================================
+// =============== PASSWORD RESET ROUTES ==============
+// =====================================================
 Route::get('password/reset', function () {
     return view('auth.passwords.email');
 })->name('password.request');
@@ -43,46 +57,26 @@ Route::post('password/reset', function (Request $request) {
         : back()->withErrors(['email' => [__($status)]]);
 })->name('password.update');
 
-Route::inertia('/', 'Welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
-
-
-// Logout
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-// Login (untuk modal)
-Route::post('login', [LoginController::class, 'login']);
-
-// Switch account (role)
-Route::middleware(['auth'])->get('switch-role/{role}', [SwitchAccountController::class, 'switch'])->name('switch.role');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
-});
-
 // Custom reset password page
 Route::get('/reset-password', function () {
     return view('auth.reset-password');
 });
 
-// Dashboard per role
+// =====================================================
+// =============== DASHBOARD ROUTES ===================
+// =====================================================
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+});
+
+// Dashboard (semua role, fitur dibedakan di blade)
 Route::middleware(['auth'])->get('/dashboard', function () {
-    $user = Auth::user();
-    $activeRole = session('active_role') ?? $user->roles->first()->name ?? 'customer';
-    switch ($activeRole) {
-        case 'developer':
-            return view('dashboard.developer');
-        case 'superAdmin':
-            return view('dashboard.superadmin');
-        case 'admin':
-            return view('dashboard.admin');
-        default:
-            return view('dashboard.customer');
-    }
+    return view('dashboard.dashboard');
 })->name('dashboard.role');
 
-// Jelajah Event
+// =====================================================
+// =============== EVENT ROUTES =======================
+// =====================================================
 Route::get('/jelajah', function () {
     // Contoh data event, ganti dengan query ke database jika sudah ada model Event
     $events = [
@@ -110,5 +104,12 @@ Route::get('/jelajah', function () {
     ];
     return view('jelajah', compact('events'));
 });
+
+// =====================================================
+// =============== HOME & OTHER ROUTES ================
+// =====================================================
+Route::inertia('/', 'Welcome', [
+    'canRegister' => Features::enabled(Features::registration()),
+])->name('home');
 
 require __DIR__.'/settings.php';
