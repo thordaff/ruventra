@@ -38,5 +38,14 @@ class RoleAndUserSeeder extends Seeder
             'password' => Hash::make('superpassword'),
         ]);
         $super->roles()->sync([Role::where('name', 'superAdmin')->first()->id]);
+
+        // User dengan password 12345678
+        $user = User::firstOrCreate([
+            'email' => 'user@ruventra.com',
+        ], [
+            'name' => 'User',
+            'password' => Hash::make('12345678'),
+        ]);
+        $user->roles()->sync([Role::where('name', 'customer')->first()->id]);
     }
 }
