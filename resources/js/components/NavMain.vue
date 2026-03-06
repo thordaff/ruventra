@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import { ChevronRight } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import {
     Collapsible,
     CollapsibleContent,
