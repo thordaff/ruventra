@@ -8,10 +8,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/composables/useAuth';
+import { useToast } from '@/composables/useToast';
 
 const router = useRouter();
 const route = useRoute();
 const { login, register } = useAuth();
+const { toast } = useToast();
 
 const isLogin = ref(true);
 
@@ -32,6 +34,7 @@ async function handleLogin() {
     loginProcessing.value = true;
     try {
         await login(loginEmail.value, loginPassword.value, loginRemember.value);
+        toast(`Selamat datang kembali! 👋`, 'success');
         await router.push(getRedirectTarget());
     } catch (err: any) {
         if (err.response?.status === 422) {
@@ -59,6 +62,7 @@ async function handleRegister() {
     registerProcessing.value = true;
     try {
         await register(registerName.value, registerEmail.value, registerPassword.value, registerPasswordConfirm.value);
+        toast(`Akun berhasil dibuat. Selamat datang! 🎉`, 'success');
         await router.push(getRedirectTarget());
     } catch (err: any) {
         if (err.response?.status === 422) {
