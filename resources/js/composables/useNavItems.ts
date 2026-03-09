@@ -8,6 +8,8 @@ import {
     Settings,
     FolderGit2,
     BookOpen,
+    CalendarCheck,
+    UserCog,
 } from 'lucide-vue-next';
 import { shallowRef, ref } from 'vue';
 import type { Component } from 'vue';
@@ -22,6 +24,8 @@ const iconMap: Record<string, Component> = {
     Settings,
     FolderGit2,
     BookOpen,
+    CalendarCheck,
+    UserCog,
 };
 
 const mainNavItems = shallowRef<NavItem[]>([]);
