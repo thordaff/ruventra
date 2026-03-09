@@ -1,7 +1,8 @@
-<template>
-  <router-view />
-</template>
-
 <script setup lang="ts">
-// Root component — menampilkan halaman berdasarkan Vue Router
+import ToastContainer from '@/components/ToastContainer.vue';
 </script>
+
+<template>
+    <router-view />
+    <ToastContainer />
+</template>
