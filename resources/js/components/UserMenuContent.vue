@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import UserInfo from '@/components/UserInfo.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useToast } from '@/composables/useToast';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
@@ -20,9 +21,11 @@ defineProps<Props>();
 
 const router = useRouter();
 const { logout } = useAuth();
+const { toast } = useToast();
 
 const handleLogout = async () => {
     await logout();
+    toast('Anda telah keluar. Sampai jumpa! 👋', 'info');
     router.push('/');
 };
 </script>
