@@ -74,6 +74,88 @@ class NavItemSeeder extends Seeder
         $system->roles()->sync([$developer->id, $superAdmin->id]);
 
         // -------------------------------------------------------
+        // MAIN NAV — SuperAdmin & Developer Only
+        // -------------------------------------------------------
+        $eventManagement = NavItem::create([
+            'title'   => 'Event Management',
+            'href'    => '/events/management',
+            'icon'    => 'CalendarCheck',
+            'section' => 'main',
+            'order'   => 4,
+        ]);
+        $eventManagement->roles()->sync([$superAdmin->id, $developer->id]);
+
+        // Parent baru untuk tools superAdmin & developer
+        $toolsParent = NavItem::create([
+            'title'   => 'Developer Tools',
+            'href'    => '#',
+            'icon'    => 'Settings',
+            'section' => 'main',
+            'order'   => 5,
+        ]);
+        $toolsParent->roles()->sync([$superAdmin->id, $developer->id]);
+
+        $userManagement = NavItem::create([
+            'title'     => 'User Management',
+            'href'      => '/users/management',
+            'icon'      => 'UserCog',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 1,
+        ]);
+        $userManagement->roles()->sync([$superAdmin->id]);
+
+        $reports = NavItem::create([
+            'title'     => 'Reports & Analytics',
+            'href'      => '/reports',
+            'icon'      => 'BarChart',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 2,
+        ]);
+        $reports->roles()->sync([$superAdmin->id]);
+
+        $systemLogs = NavItem::create([
+            'title'     => 'System Logs',
+            'href'      => '/system/logs',
+            'icon'      => 'FileText',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 3,
+        ]);
+        $systemLogs->roles()->sync([$developer->id]);
+
+        $apiPlayground = NavItem::create([
+            'title'     => 'API Playground',
+            'href'      => '/api/playground',
+            'icon'      => 'TerminalSquare',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 4,
+        ]);
+        $apiPlayground->roles()->sync([$developer->id]);
+
+        $featureFlags = NavItem::create([
+            'title'     => 'Feature Flags',
+            'href'      => '/feature-flags',
+            'icon'      => 'ToggleLeft',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 5,
+        ]);
+        $featureFlags->roles()->sync([$developer->id]);
+
+        $dbTools = NavItem::create([
+            'title'     => 'Database Tools',
+            'href'      => '/database/tools',
+            'icon'      => 'Database',
+            'section'   => 'main',
+            'parent_id' => $toolsParent->id,
+            'order'     => 6,
+        ]);
+        $dbTools->roles()->sync([$developer->id]);
+
+        // -------------------------------------------------------
         // FOOTER NAV — external links (no role filter)
         // -------------------------------------------------------
         NavItem::create([
