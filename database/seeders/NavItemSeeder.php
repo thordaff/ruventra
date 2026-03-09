@@ -93,7 +93,7 @@ class NavItemSeeder extends Seeder
             'section' => 'main',
             'order'   => 5,
         ]);
-        $toolsParent->roles()->sync([$superAdmin->id, $developer->id]);
+        $toolsParent->roles()->sync([$developer->id]);
 
         $userManagement = NavItem::create([
             'title'     => 'User Management',
@@ -103,7 +103,7 @@ class NavItemSeeder extends Seeder
             'parent_id' => $toolsParent->id,
             'order'     => 1,
         ]);
-        $userManagement->roles()->sync([$superAdmin->id]);
+        $userManagement->roles()->sync([$developer->id]);
 
         $reports = NavItem::create([
             'title'     => 'Reports & Analytics',
@@ -113,7 +113,7 @@ class NavItemSeeder extends Seeder
             'parent_id' => $toolsParent->id,
             'order'     => 2,
         ]);
-        $reports->roles()->sync([$superAdmin->id]);
+        $reports->roles()->sync([$developer->id]);
 
         $systemLogs = NavItem::create([
             'title'     => 'System Logs',
