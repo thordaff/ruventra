@@ -5,13 +5,17 @@ namespace Database\Seeders;
 use App\Models\NavItem;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class NavItemSeeder extends Seeder
 {
     public function run(): void
     {
-        // Hapus data lama
+        Schema::disableForeignKeyConstraints();
+        DB::table('nav_item_role')->truncate();
         NavItem::truncate();
+        Schema::enableForeignKeyConstraints();
 
         $developer  = Role::where('name', 'developer')->first();
         $superAdmin = Role::where('name', 'superAdmin')->first();
