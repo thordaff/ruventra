@@ -11,7 +11,7 @@ class NavItemSeeder extends Seeder
     public function run(): void
     {
         // Hapus data lama
-        NavItem::query()->delete();
+        NavItem::truncate();
 
         $developer  = Role::where('name', 'developer')->first();
         $superAdmin = Role::where('name', 'superAdmin')->first();
