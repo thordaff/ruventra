@@ -1,6 +1,6 @@
-import { useRoute } from 'vue-router';
 import type { ComputedRef, DeepReadonly } from 'vue';
 import { computed, readonly } from 'vue';
+import { useRoute } from 'vue-router';
 import { toUrl } from '@/lib/utils';
 
 export type UseCurrentUrlReturn = {

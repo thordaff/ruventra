@@ -27,6 +27,8 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
             { path: '', name: 'Dashboard', component: Dashboard },
+            { path: 'statistics', name: 'DashboardStatistics', component: () => import('./pages/dashboard/main/Statistic.vue') },
+            { path: 'revenue', name: 'DashboardRevenue', component: () => import('./pages/dashboard/main/Revenue.vue') },
             // Sub-routes dashboard pakai sidebar, tampilkan 404 jika tidak ditemukan
             { path: ':pathMatch(.*)*', name: 'DashboardNotFound', component: NotFound },
         ],
@@ -41,6 +43,15 @@ const routes = [
             { path: 'password', name: 'SettingsPassword', component: () => import('./pages/settings/Password.vue') },
             { path: 'appearance', name: 'SettingsAppearance', component: () => import('./pages/settings/Appearance.vue') },
             { path: 'two-factor', name: 'SettingsTwoFactor', component: () => import('./pages/settings/TwoFactor.vue') },
+        ],
+    },
+    {
+        path: '/system',
+        component: DashboardSidebarLayout,
+        meta: { requiresAuth: true },
+        redirect: '/system/logs',
+        children: [
+            { path: 'logs', name: 'SystemLogs', component: () => import('./pages/system/Logs.vue') },
         ],
     },
     // Global 404

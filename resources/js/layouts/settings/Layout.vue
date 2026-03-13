@@ -25,8 +25,8 @@ const { isCurrentOrParentUrl } = useCurrentUrl();
             title="Settings"
             description="Manage your profile and account settings"
         />
-
-        <div class="flex flex-col lg:flex-row lg:space-x-12">
+        
+        <div class="flex flex-col lg:flex-row lg:space-x-12 pt-5">
             <aside class="w-full max-w-xl lg:w-48">
                 <nav
                     class="flex flex-col space-y-1 space-x-0"

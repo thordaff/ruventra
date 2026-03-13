@@ -15,6 +15,22 @@ axios.interceptors.request.use((config) => {
     return config;
 });
 
+// Handle session invalidation (kicked by another login)
+axios.interceptors.response.use(undefined, (error) => {
+    if (
+        error.response?.status === 401 &&
+        error.response?.data?.status === 'session_invalidated'
+    ) {
+        // Clear auth state and redirect gracefully
+        import('@/composables/useAuth').then(({ useAuth }) => {
+            const { user } = useAuth();
+            user.value = null;
+        });
+        router.push({ name: 'Login' });
+    }
+    return Promise.reject(error);
+});
+
 const app = createApp(App);
 app.use(router);
 app.mount('#app');

@@ -8,10 +8,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/composables/useAuth';
+import { useToast } from '@/composables/useToast';
 
 const router = useRouter();
 const route = useRoute();
 const { login, register } = useAuth();
+const { toast } = useToast();
 
 const isLogin = ref(true);
 
@@ -32,8 +34,19 @@ async function handleLogin() {
     loginProcessing.value = true;
     try {
         await login(loginEmail.value, loginPassword.value, loginRemember.value);
-        await router.push(getRedirectTarget());
+        // login() sets user.value only on real success.
+        // If duplicate_session modal was triggered, user is still null — do nothing here.
+        const { user } = useAuth();
+        if (user.value) {
+            toast(`Selamat datang kembali! 👋`, 'success');
+            await router.push(getRedirectTarget());
+        }
     } catch (err: any) {
+        // Suspended account
+        if (err?.type === 'suspended') {
+            loginErrors.value = { email: err.message };
+            return;
+        }
         if (err.response?.status === 422) {
             const data = err.response.data;
             loginErrors.value = data.errors ?? {};
@@ -59,6 +72,7 @@ async function handleRegister() {
     registerProcessing.value = true;
     try {
         await register(registerName.value, registerEmail.value, registerPassword.value, registerPasswordConfirm.value);
+        toast(`Akun berhasil dibuat. Selamat datang! 🎉`, 'success');
         await router.push(getRedirectTarget());
     } catch (err: any) {
         if (err.response?.status === 422) {

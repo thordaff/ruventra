@@ -155,6 +155,7 @@
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/composables/useAuth';
+import { useToast } from '@/composables/useToast';
 
 defineProps<{ show: boolean }>();
 const emit = defineEmits(['close']);
@@ -175,8 +176,10 @@ const registerLoading = ref(false);
 async function doLogin() {
     loginError.value = '';
     loginLoading.value = true;
+    const { toast } = useToast();
     try {
         await login(loginForm.email, loginForm.password);
+        toast('Selamat datang kembali! 👋', 'success');
         emit('close');
         router.push('/dashboard');
     } catch (err: any) {
