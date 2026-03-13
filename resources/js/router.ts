@@ -45,6 +45,15 @@ const routes = [
             { path: 'two-factor', name: 'SettingsTwoFactor', component: () => import('./pages/settings/TwoFactor.vue') },
         ],
     },
+    {
+        path: '/system',
+        component: DashboardSidebarLayout,
+        meta: { requiresAuth: true },
+        redirect: '/system/logs',
+        children: [
+            { path: 'logs', name: 'SystemLogs', component: () => import('./pages/system/Logs.vue') },
+        ],
+    },
     // Global 404
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
