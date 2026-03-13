@@ -18,7 +18,7 @@ import { useAuth } from '@/composables/useAuth';
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement, LineElement, PointElement);
 
-const { hasRole } = useAuth();
+useAuth();
 
 const summaryCards = [
     { label: 'Total Event', value: '48', icon: CalendarDays, color: 'text-indigo-600', bg: 'bg-indigo-50' },

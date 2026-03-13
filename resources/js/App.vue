@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ToastContainer from '@/components/ToastContainer.vue';
+import { useRouter } from 'vue-router';
 import DuplicateSessionModal from '@/components/DuplicateSessionModal.vue';
+import ToastContainer from '@/components/ToastContainer.vue';
 import { duplicateSessionData, useAuth } from '@/composables/useAuth';
 import { useToast } from '@/composables/useToast';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const { forceLogin } = useAuth();
