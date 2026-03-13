@@ -34,9 +34,19 @@ async function handleLogin() {
     loginProcessing.value = true;
     try {
         await login(loginEmail.value, loginPassword.value, loginRemember.value);
-        toast(`Selamat datang kembali! 👋`, 'success');
-        await router.push(getRedirectTarget());
+        // login() sets user.value only on real success.
+        // If duplicate_session modal was triggered, user is still null — do nothing here.
+        const { user } = useAuth();
+        if (user.value) {
+            toast(`Selamat datang kembali! 👋`, 'success');
+            await router.push(getRedirectTarget());
+        }
     } catch (err: any) {
+        // Suspended account
+        if (err?.type === 'suspended') {
+            loginErrors.value = { email: err.message };
+            return;
+        }
         if (err.response?.status === 422) {
             const data = err.response.data;
             loginErrors.value = data.errors ?? {};
