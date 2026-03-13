@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NavItemController;
+use App\Http\Controllers\SystemLogController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Http\Request;
 
 // =====================================================
@@ -28,6 +30,19 @@ Route::middleware('auth')->get('/api/nav-items', [NavItemController::class, 'ind
 // API: get new CSRF token (untuk SPA setelah logout)
 Route::get('/api/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
+});
+
+// =====================================================
+// =============== DEVELOPER / ADMIN API ==============
+// =====================================================
+Route::middleware(['auth'])->prefix('api')->group(function () {
+    // System Logs (developer only – enforced in Vue route guard)
+    Route::get('/system-logs', [SystemLogController::class, 'index']);
+
+    // User management (suspend / unsuspend) – developer / superAdmin
+    Route::get('/users', [UserManagementController::class, 'index']);
+    Route::post('/users/{user}/suspend', [UserManagementController::class, 'suspend']);
+    Route::post('/users/{user}/unsuspend', [UserManagementController::class, 'unsuspend']);
 });
 
 // =====================================================
