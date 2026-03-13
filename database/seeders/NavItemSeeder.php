@@ -66,12 +66,22 @@ class NavItemSeeder extends Seeder
         // -------------------------------------------------------
         $system = NavItem::create([
             'title'   => 'System',
-            'href'    => '/system',
+            'href'    => '#',
             'icon'    => 'Shield',
             'section' => 'main',
             'order'   => 3,
         ]);
         $system->roles()->sync([$developer->id, $superAdmin->id]);
+
+        $systemLogs = NavItem::create([
+            'title'     => 'System Logs',
+            'href'      => '/system/logs',
+            'icon'      => 'FileText',
+            'section'   => 'main',
+            'parent_id' => $system->id,
+            'order'     => 1,
+        ]);
+        $systemLogs->roles()->sync([$developer->id, $superAdmin->id]);
 
         // -------------------------------------------------------
         // MAIN NAV — SuperAdmin & Developer Only
@@ -114,16 +124,6 @@ class NavItemSeeder extends Seeder
             'order'     => 2,
         ]);
         $reports->roles()->sync([$developer->id]);
-
-        $systemLogs = NavItem::create([
-            'title'     => 'System Logs',
-            'href'      => '/system/logs',
-            'icon'      => 'FileText',
-            'section'   => 'main',
-            'parent_id' => $toolsParent->id,
-            'order'     => 3,
-        ]);
-        $systemLogs->roles()->sync([$developer->id]);
 
         $apiPlayground = NavItem::create([
             'title'     => 'API Playground',
