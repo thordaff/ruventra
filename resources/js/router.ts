@@ -13,6 +13,9 @@ const routes = [
         component: AppLayout,
         children: [
             { path: '', name: 'Home', component: Home },
+            { path: 'jelajah-event', name: 'JelajahEvent', component: () => import('./pages/JelajahEvent.vue') },
+            { path: 'jelajah-event/:id(\\d+)', name: 'JelajahEventDetail', component: () => import('./pages/JelajahEventDetail.vue') },
+            { path: 'jelajah', redirect: { name: 'JelajahEvent' } },
         ],
     },
     {
