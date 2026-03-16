@@ -15,7 +15,6 @@ const {
     closePreview,
     columnCount,
     filteredEvents,
-    listContainerRef,
     onListScroll,
     openPreview,
     previewOpen,
