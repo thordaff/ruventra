@@ -12,7 +12,7 @@
                 <h4 class="font-semibold mb-2">Navigasi</h4>
                 <ul class="space-y-1 text-sm">
                     <li>
-                        <router-link to="/jelajah" class="hover:text-blue-400">Jelajah Event</router-link>
+                        <router-link to="/jelajah-event" class="hover:text-blue-400">Jelajah Event</router-link>
                     </li>
                     <li>
                         <router-link to="/dashboard" class="hover:text-blue-400">Dashboard</router-link>
